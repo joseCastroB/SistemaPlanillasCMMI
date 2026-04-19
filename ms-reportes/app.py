@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Tu misma cadena de conexión (apuntando al pooler correcto aws-1)
-DB_URL = DATABASE_URL
+DB_URL = os.environ.get("DATABASE_URL")
 
 @app.route('/api/reportes/planillas', methods=['GET'])
 def generar_reporte():
