@@ -16,12 +16,12 @@ function App() {
   const [loadingPlan, setLoadingPlan] = useState(false);
   const [loadingRep, setLoadingRep] = useState(false);
 
-  // --- NUEVOS ESTADOS PARA VISTA DE DATOS ---
+  // --- ESTADOS PARA VISTA DE DATOS ---
   const [listaEmpleados, setListaEmpleados] = useState([]);
   const [listaPlanillas, setListaPlanillas] = useState([]);
   const [loadingDatos, setLoadingDatos] = useState(false);
 
-  // --- NUEVO: Función para cargar datos ---
+  // --- Función para cargar datos ---
   const cargarDatos = async () => {
     setLoadingDatos(true);
     try {
@@ -44,7 +44,6 @@ function App() {
     }
   }, [activeTab]);
 
-  // Funciones previas...
   const handleGuardarEmpleado = async (e) => {
     e.preventDefault();
     try {
@@ -54,13 +53,13 @@ function App() {
         body: JSON.stringify({ nombre: empNombre, cargo: empCargo, salario_base: parseFloat(empSalario) })
       });
       if (response.ok) {
-        setEmpMensaje('✅ Empleado registrado exitosamente.');
+        setEmpMensaje(<><span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '5px', color: 'green' }}>check_circle</span> Empleado registrado exitosamente.</>);
         setEmpNombre(''); setEmpCargo(''); setEmpSalario('');
       } else {
-        setEmpMensaje('❌ Error al guardar el empleado.');
+        setEmpMensaje(<><span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '5px', color: 'red' }}>error</span> Error al guardar el empleado.</>);
       }
     } catch (error) {
-      setEmpMensaje('❌ Error de conexión.');
+      setEmpMensaje(<><span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '5px', color: 'red' }}>error</span> Error de conexión.</>);
     }
   };
 
@@ -69,9 +68,12 @@ function App() {
     try {
       const response = await fetch(`https://planillas-production.up.railway.app/api/planillas/calcular?empleadoId=${searchId}`, { method: 'POST' });
       const data = await response.text();
-      setPlanMensaje(response.ok ? `✅ ${data}` : `❌ ${data}`);
+      setPlanMensaje(response.ok 
+        ? <><span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '5px', color: 'green' }}>check_circle</span> {data}</> 
+        : <><span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '5px', color: 'red' }}>error</span> {data}</>
+      );
     } catch (error) {
-      setPlanMensaje('❌ Error de conexión.');
+      setPlanMensaje(<><span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '5px', color: 'red' }}>error</span> Error de conexión.</>);
     } finally {
       setLoadingPlan(false);
     }
@@ -86,11 +88,14 @@ function App() {
   return (
     <div className="app-container">
       <nav className="sidebar">
-        <div className="sidebar-header">⚙️ CMMI System</div>
-        <button className={`nav-button ${activeTab === 'landing' ? 'active' : ''}`} onClick={() => setActiveTab('landing')}>🏠 Inicio</button>
-        <button className={`nav-button ${activeTab === 'empleados' ? 'active' : ''}`} onClick={() => setActiveTab('empleados')}>👥 Registro</button>
-        <button className={`nav-button ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>📊 Procesos</button>
-        <button className={`nav-button ${activeTab === 'datos' ? 'active' : ''}`} onClick={() => setActiveTab('datos')}>📁 Ver Datos</button>
+        <div className="sidebar-header">
+          <span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '8px' }}>settings</span> 
+          CMMI System
+        </div>
+        <button className={`nav-button ${activeTab === 'landing' ? 'active' : ''}`} onClick={() => setActiveTab('landing')}><span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '8px' }}>home</span> Inicio</button>
+        <button className={`nav-button ${activeTab === 'empleados' ? 'active' : ''}`} onClick={() => setActiveTab('empleados')}><span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '8px' }}>person_add</span> Registro</button>
+        <button className={`nav-button ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}><span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '8px' }}>account_tree</span> Procesos</button>
+        <button className={`nav-button ${activeTab === 'datos' ? 'active' : ''}`} onClick={() => setActiveTab('datos')}><span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '8px' }}>folder_open</span> Ver Datos</button>
       </nav>
 
       <main className="main-content">
@@ -102,11 +107,11 @@ function App() {
             <hr style={{ margin: '30px 0', borderColor: '#e2e8f0' }} />
             <div style={{ textAlign: 'left', maxWidth: '650px', margin: '0 auto' }}>
               <h3>Capacidades Core del Sistema:</h3>
-              <ul style={{ lineHeight: '1.8', fontSize: '1.05rem', color: '#475569' }}>
-                <li>👥 <strong>Administración de Personal:</strong> Registro centralizado de colaboradores, estructuración de cargos y asignación de salarios base.</li>
-                <li>⚙️ <strong>Cálculo Automatizado:</strong> Procesamiento exacto de planillas, cálculo de sueldos netos y aplicación automática de deducciones.</li>
-                <li>📊 <strong>Inteligencia y Reportes:</strong> Generación instantánea de Kardex corporativos e historiales de pago exportables para auditoría.</li>
-                <li>🔒 <strong>Trazabilidad Continua:</strong> Arquitectura validada para asegurar la integridad de los datos financieros en cada transacción.</li>
+              <ul style={{ lineHeight: '1.8', fontSize: '1.05rem', color: '#475569', listStyleType: 'none', paddingLeft: 0 }}>
+                <li><span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '8px', color: '#3b82f6' }}>group</span> <strong>Administración de Personal:</strong> Registro centralizado de colaboradores, estructuración de cargos y asignación de salarios base.</li>
+                <li><span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '8px', color: '#10b981' }}>calculate</span> <strong>Cálculo Automatizado:</strong> Procesamiento exacto de planillas, cálculo de sueldos netos y aplicación automática de deducciones.</li>
+                <li><span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '8px', color: '#f59e0b' }}>bar_chart</span> <strong>Inteligencia y Reportes:</strong> Generación instantánea de Kardex corporativos e historiales de pago exportables para auditoría.</li>
+                <li><span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '8px', color: '#6366f1' }}>lock</span> <strong>Trazabilidad Continua:</strong> Arquitectura validada para asegurar la integridad de los datos financieros en cada transacción.</li>
               </ul>
             </div>
           </div>
@@ -140,17 +145,23 @@ function App() {
             </div>
             <div className="card">
               <h2>Reportes Consolidado</h2>
-              <button onClick={handleDescargarReporte} disabled={loadingRep} className="btn btn-success">📥 Descargar Reporte Excel</button>
+              <button onClick={handleDescargarReporte} disabled={loadingRep} className="btn btn-success">
+                <span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '5px' }}>download</span> 
+                Descargar Reporte Excel
+              </button>
             </div>
           </div>
         )}
 
-        {/* NUEVA VISTA: VER DATOS */}
+        {/* VISTA: VER DATOS */}
         {activeTab === 'datos' && (
           <div>
             <div className="card">
               <h2>Base de Datos: Empleados</h2>
-              <button onClick={cargarDatos} className="btn btn-primary" style={{marginBottom: '15px'}}>🔄 Refrescar Datos</button>
+              <button onClick={cargarDatos} className="btn btn-primary" style={{marginBottom: '15px'}}>
+                <span className="material-symbols-outlined" style={{ verticalAlign: 'middle', marginRight: '5px' }}>refresh</span> 
+                Refrescar Datos
+              </button>
               {loadingDatos ? <p>Cargando...</p> : (
                 <div className="table-responsive">
                   <table className="data-table">
