@@ -56,5 +56,7 @@ def generar_reporte():
         return {"error": str(e)}, 500
 
 if __name__ == '__main__':
-    print("Microservicio de Reportes corriendo en el puerto 5000...")
-    app.run(port=5000)
+   # Toma el puerto que Railway le asigne, o usa el 5000 si estás en local
+    port = int(os.environ.get("PORT", 5000))
+    # host='0.0.0.0' es la llave maestra para que Railway pueda entrar
+    app.run(host='0.0.0.0', port=port)
