@@ -25,10 +25,10 @@ function App() {
   const cargarDatos = async () => {
     setLoadingDatos(true);
     try {
-      const resEmp = await fetch('http://localhost:3001/api/empleados');
+      const resEmp = await fetch('https://ms-empleados-production.up.railway.app/api/empleados');
       if(resEmp.ok) setListaEmpleados(await resEmp.json());
 
-      const resPlan = await fetch('http://localhost:8080/api/planillas/todas');
+      const resPlan = await fetch('https://planillas-production.up.railway.app/api/planillas/todas');
       if(resPlan.ok) setListaPlanillas(await resPlan.json());
     } catch (error) {
       console.error("Error cargando datos", error);
@@ -48,7 +48,7 @@ function App() {
   const handleGuardarEmpleado = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3001/api/empleados', {
+      const response = await fetch('https://ms-empleados-production.up.railway.app/api/empleados', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nombre: empNombre, cargo: empCargo, salario_base: parseFloat(empSalario) })
@@ -67,7 +67,7 @@ function App() {
   const handleGenerarPlanilla = async () => {
     setLoadingPlan(true); setPlanMensaje('');
     try {
-      const response = await fetch(`http://localhost:8080/api/planillas/calcular?empleadoId=${searchId}`, { method: 'POST' });
+      const response = await fetch(`https://planillas-production.up.railway.app/api/planillas/calcular?empleadoId=${searchId}`, { method: 'POST' });
       const data = await response.text();
       setPlanMensaje(response.ok ? `✅ ${data}` : `❌ ${data}`);
     } catch (error) {
@@ -79,7 +79,7 @@ function App() {
 
   const handleDescargarReporte = () => {
     setLoadingRep(true);
-    window.open('http://localhost:5000/api/reportes/planillas', '_blank');
+    window.open('https://ms-reportes-production.up.railway.app/api/reportes/planillas', '_blank');
     setLoadingRep(false);
   };
 

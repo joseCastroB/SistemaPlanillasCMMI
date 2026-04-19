@@ -26,7 +26,7 @@ public class PlanillaController {
     public ResponseEntity<?> calcularPlanilla(@RequestParam("empleadoId") Long empleadoId) {
         try {
             // PASO A: Llamar al microservicio de Empleados (Node.js) en el puerto 3001
-            String nodeJsUrl = "http://localhost:3001/api/empleados/" + empleadoId;
+            String nodeJsUrl = "https://ms-empleados-production.up.railway.app/api/empleados/" + empleadoId;
             EmpleadoDTO empleado = restTemplate.getForObject(nodeJsUrl, EmpleadoDTO.class);
 
             if (empleado == null) {
