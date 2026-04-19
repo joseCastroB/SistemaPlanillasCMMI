@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  ms-empleados:
+    build: ./ms-empleados
+    ports: ["3001:3001"]
+    networks: ["cmmi-net"]
+
+  ms-planillas:
+    build: ./planillas
+    ports: ["8080:8080"]
+    depends_on: [ms-empleados]
+    networks: ["cmmi-net"]
+
+  ms-reportes:
+    build: ./ms-reportes
+    ports: ["5000:5000"]
+    networks: ["cmmi-net"]
+
+  frontend:
+    build: ./frontend-planillas
+    ports: ["80:80"]
+    networks: ["cmmi-net"]
+
+networks:
+  cmmi-net:
+    driver: bridge
