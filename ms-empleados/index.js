@@ -10,7 +10,10 @@ app.use(express.json());
 const connectionString = process.env.DATABASE_URL;
 
 const pool = new Pool({
-  connectionString: connectionString,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 // Endpoint para buscar un empleado por ID (Lo usará Spring Boot más adelante)
