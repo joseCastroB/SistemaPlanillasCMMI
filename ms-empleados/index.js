@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 // Reemplaza esto con tu URI de conexión de Supabase
-const connectionString = DATABASE_URL;
+const connectionString = process.env.DATABASE_URL;
 
 const pool = new Pool({
   connectionString: connectionString,
